@@ -4,7 +4,7 @@ import { Article } from "@/types";
 import Parser from "rss-parser";
 import { Readability } from "@mozilla/readability";
 import { JSDOM } from "jsdom";
-import TurndownService from "turndown";
+
 
 const parser = new Parser({
   customFields: {
@@ -132,11 +132,8 @@ export async function getArticleById(id: string, skipScraping = false): Promise<
       throw new Error("Readability failed to parse the document");
     }
 
-    // Convert HTML to Markdown
-    const turndownService = new TurndownService();
-    // Some basic cleanup rules
-    turndownService.remove(['script', 'noscript', 'style']);
-    const markdownContent = turndownService.turndown(article.content || "");
+    // Use article text content as the article body
+    const markdownContent: string = (article.textContent || "").trim();
 
     // Provide a fallback thumbnail if possible
     const ogImage = doc.window.document.querySelector('meta[property="og:image"]')?.getAttribute("content");
