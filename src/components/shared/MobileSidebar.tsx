@@ -47,11 +47,11 @@ export function MobileSidebar() {
       {/* Full-screen portal overlay + drawer */}
       {isOpen && (
         <div
-          style={{ position: "fixed", inset: 0, zIndex: 9999 }}
+          style={{ position: "fixed", inset: 0, zIndex: 9999, height: "100vh", width: "100vw" }}
         >
           {/* Dark overlay */}
           <div
-            style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)" }}
+            style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.75)", height: "100vh", width: "100vw" }}
             onClick={() => setIsOpen(false)}
           />
 
@@ -61,13 +61,14 @@ export function MobileSidebar() {
               position: "absolute",
               top: 0,
               left: 0,
-              bottom: 0,
+              height: "100vh",
               width: "280px",
-              background: "#111111",
-              borderRight: "1px solid rgba(255,255,255,0.1)",
+              backgroundColor: "#111111",
+              borderRight: "1px solid rgba(255,255,255,0.15)",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "4px 0 24px rgba(0,0,0,0.8)",
+              boxShadow: "8px 0 32px rgba(0,0,0,0.9)",
+              overflowY: "auto",
             }}
           >
             {/* Header */}
