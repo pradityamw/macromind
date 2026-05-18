@@ -136,7 +136,7 @@ export async function getArticleById(id: string, skipScraping = false): Promise<
     const turndownService = new TurndownService();
     // Some basic cleanup rules
     turndownService.remove(['script', 'noscript', 'style']);
-    const markdownContent = turndownService.turndown(article.content);
+    const markdownContent = turndownService.turndown(article.content || "");
 
     // Provide a fallback thumbnail if possible
     const ogImage = doc.window.document.querySelector('meta[property="og:image"]')?.getAttribute("content");
