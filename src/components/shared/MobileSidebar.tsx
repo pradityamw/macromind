@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Newspaper, BookOpen, Bookmark, Settings, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -11,6 +11,21 @@ export function MobileSidebar() {
   const pathname = usePathname();
   const { language } = useLanguageStore();
 
+  // Prevent body scroll when drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  // Close on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const navItems = [
     { href: `/dashboard?lang=${language}`, label: language === 'en' ? "My Feed" : "Beritaku", icon: Newspaper },
     { href: `/learn?lang=${language}`, label: language === 'en' ? "Learn" : "Belajar", icon: BookOpen },
@@ -20,7 +35,7 @@ export function MobileSidebar() {
 
   return (
     <>
-      {/* Hamburger Button */}
+      {/* Hamburger Button - mobile only */}
       <button
         onClick={() => setIsOpen(true)}
         className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
@@ -29,55 +44,78 @@ export function MobileSidebar() {
         <Menu className="h-5 w-5" />
       </button>
 
-      {/* Overlay */}
+      {/* Full-screen portal overlay + drawer */}
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Drawer */}
-      <div
-        className={`md:hidden fixed top-0 left-0 z-50 h-full w-72 bg-[#0a0a0a] border-r border-border shadow-2xl transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Drawer Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border/50">
-          <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-            <span className="font-bold text-2xl text-primary font-heading">MacroMind</span>
-          </Link>
-          <button
+          style={{ position: "fixed", inset: 0, zIndex: 9999 }}
+        >
+          {/* Dark overlay */}
+          <div
+            style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)" }}
             onClick={() => setIsOpen(false)}
-            className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
+          />
 
-        {/* Nav Items */}
-        <nav className="flex flex-col gap-1 p-4 pt-6">
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href.split('?')[0]);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent/60"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
+          {/* Sidebar drawer */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              bottom: 0,
+              width: "280px",
+              background: "#111111",
+              borderRight: "1px solid rgba(255,255,255,0.1)",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "4px 0 24px rgba(0,0,0,0.8)",
+            }}
+          >
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+              <Link href="/dashboard" onClick={() => setIsOpen(false)} style={{ fontWeight: 700, fontSize: "22px", color: "hsl(var(--primary))", fontFamily: "var(--font-heading, sans-serif)", textDecoration: "none" }}>
+                MacroMind
               </Link>
-            );
-          })}
-        </nav>
-      </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                style={{ padding: "8px", borderRadius: "6px", background: "transparent", border: "none", color: "#888", cursor: "pointer" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Nav items */}
+            <nav style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "4px" }}>
+              {navItems.map((item) => {
+                const isActive = pathname.startsWith(item.href.split('?')[0]);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                      padding: "12px 16px",
+                      borderRadius: "8px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      background: isActive ? "rgba(var(--primary-rgb, 99,102,241), 0.15)" : "transparent",
+                      color: isActive ? "hsl(var(--primary))" : "#aaa",
+                      border: isActive ? "1px solid rgba(var(--primary-rgb, 99,102,241), 0.3)" : "1px solid transparent",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    <item.icon size={18} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      )}
     </>
   );
 }
