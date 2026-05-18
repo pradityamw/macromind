@@ -11,7 +11,7 @@ export default function DashboardLayout({
       <Navbar />
       <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
         <Sidebar />
-        <main className="flex w-full flex-col overflow-hidden py-6">
+        <main className="flex w-full flex-col overflow-hidden py-6 pb-20 md:pb-6">
           {children}
         </main>
       </div>
