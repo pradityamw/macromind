@@ -55,7 +55,7 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/60 flex items-center justify-around px-2 h-16 safe-area-pb">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border flex items-center justify-around h-16">
         {navItems.map((item) => {
           const isActive = pathname.startsWith(item.href.split('?')[0]);
           return (
@@ -64,7 +64,7 @@ export function Sidebar() {
               href={item.href}
               className={`flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
             >
-              <item.icon className={`h-5 w-5 ${isActive ? 'stroke-[2.5px]' : ''}`} />
+              <item.icon className="h-5 w-5" />
               <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           );
@@ -73,7 +73,7 @@ export function Sidebar() {
           href="/settings"
           className={`flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors ${pathname.startsWith("/settings") ? 'text-primary' : 'text-muted-foreground'}`}
         >
-          <Settings className={`h-5 w-5 ${pathname.startsWith("/settings") ? 'stroke-[2.5px]' : ''}`} />
+          <Settings className="h-5 w-5" />
           <span className="text-[10px] font-medium">{language === 'en' ? 'Settings' : 'Setelan'}</span>
         </Link>
       </nav>
