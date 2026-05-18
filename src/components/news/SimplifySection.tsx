@@ -17,7 +17,7 @@ export default function SimplifySection({ originalText }: SimplifySectionProps) 
     setIsLoading(true);
     try {
       const result = await simplifyArticle(originalText, "Beginner");
-      setSimplifiedText(result);
+      setSimplifiedText(result ?? null);
     } catch (error) {
       console.error(error);
     } finally {

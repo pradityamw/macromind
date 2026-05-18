@@ -16,12 +16,10 @@ interface GlossaryTermProps {
 
 export function GlossaryTerm({ term, definition, children }: GlossaryTermProps) {
   return (
-    <TooltipProvider delayDuration={200}>
+    <TooltipProvider delay={200}>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <span className="underline decoration-primary/50 underline-offset-4 cursor-help text-foreground font-medium hover:text-primary transition-colors">
+        <TooltipTrigger className="underline decoration-primary/50 underline-offset-4 cursor-help text-foreground font-medium hover:text-primary transition-colors">
             {children}
-          </span>
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-xs p-4 bg-card border-border shadow-xl">
           <div className="space-y-2">

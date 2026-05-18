@@ -143,7 +143,7 @@ export async function getArticleById(id: string, skipScraping = false): Promise<
 
     return {
       id,
-      title: article.title,
+      title: article.title || "No Title",
       summary: article.excerpt || "",
       content: markdownContent,
       original_url: url,
