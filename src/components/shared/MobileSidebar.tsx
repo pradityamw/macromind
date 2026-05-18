@@ -39,7 +39,7 @@ export function MobileSidebar() {
 
       {/* Drawer */}
       <div
-        className={`md:hidden fixed top-0 left-0 z-50 h-full w-72 bg-background border-r border-border shadow-2xl transform transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-0 left-0 z-50 h-full w-72 bg-[#0a0a0a] border-r border-border shadow-2xl transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
